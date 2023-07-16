@@ -1,6 +1,9 @@
 name: Publish a new article
 
-on: workflow_dispatch
+on:
+  schedule:
+    - cron: '30 18 * * *'
+  workflow_dispatch:
 
 jobs:
   publish:
