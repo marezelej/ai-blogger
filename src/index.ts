@@ -92,7 +92,7 @@ async function replaceImages(content: string): Promise<{
     }
     return {
         content: newContent,
-        images: []
+        images
     };
 }
 
@@ -114,7 +114,4 @@ console.log('Creating a new article...');
 createArticle()
     .then(({file}) => {
         console.log(`Successfully created the '${file}' article.`);
-    }).catch(e => {
-        console.log('There was an error creating the article.');
-        console.log(`${e.message}`);
     });
