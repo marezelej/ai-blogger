@@ -44,7 +44,7 @@ async function generateContent(topic: string, words: number, lang: string): Prom
 
 function saveArticle(title: string, content: string): string {
     const timestamp = Date.now();
-    const filePath = `./articles/` + toFileName(`${timestamp} - ${title}`) + '.md';
+    const filePath = `./ai-blogger-server/src/content/articles/` + toFileName(`${timestamp} - ${title}`) + '.md';
     fs.writeFileSync(filePath, content, 'utf-8');
     return filePath;
 }
@@ -84,22 +84,11 @@ async function replaceImages(content: string): Promise<{
     };
 }
 
-function addEntry(title: string, path: string) {
-    const filePath = './articles/README.md';
-    const data = fs.readFileSync(filePath, 'utf8');
-    const entry = `- [${title}](<${path}>)`;
-    const tocTitle = '## Articles';
-    const splitIndex = data.indexOf(tocTitle) + tocTitle.length + 1;
-    const updatedData = data.substring(0, splitIndex) + entry + data.substring(splitIndex);
-    fs.writeFileSync(filePath, updatedData, 'utf8');
-}
-
 async function createArticle(): Promise<{title: string, content: string, prompt: string, file: string}> {
     const trend = await fetchTrend();
     const { title, content: markdown, prompt } = await generateContent(trend, ENV.words, ENV.lang);
     const { content } = await replaceImages(markdown);
     const file = saveArticle(title, content);
-    addEntry(title, file.replace('./articles/', ''));
     return {
         title,
         content,

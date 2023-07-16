@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+    const articles = await getCollection('articles');
+    return articles.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+const { entry } = Astro.props;
+const title =  entry.body.substr(0, entry.body.indexOf('\n')).replace(/[#*]/g, '').trim();
+const { Content } = await entry.render();
+---
+
+<Layout title={title}>
+	<main>
+        <Card
+            href="/"
+            title="Home"
+        />
+        <div class="content">
+            <Content />
+        </div>
+        <Card
+            href="/"
+            title="Home"
+        />
+	</main>
+</Layout>
+
+<style>
+    main {
+		margin: auto;
+		max-width: 100ch;
+    }
+	.content {
+		padding: 1rem;
+		background-color: white;
+		background-image: none;
+		background-size: 400%;
+		border-radius: 0.6rem;
+		background-position: 100%;
+		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+</style>
