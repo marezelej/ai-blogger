@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import { getCollection, getEntry } from 'astro:content';
+import Disclaimer from "../components/Disclaimer.astro";
 const articles = await getCollection('articles');
 const items = articles.map((article) => ({
     title: article.body.substr(0, article.body.indexOf('\n')).replace(/[#*]/g, '').trim(),
@@ -14,6 +15,8 @@ const items = articles.map((article) => ({
 		<h1><span class="text-gradient">AI Blogger</span></h1>
 		<p class="instructions">
 			Your automated content companion, crafting engaging articles every day. Unleash consistent creativity and save time with our smart blogging solution.
+			<br/>
+			<Disclaimer />
 		</p>
 		<ul role="list" class="link-card-grid">
 		    {items.map((item) => (
@@ -42,7 +45,7 @@ const items = articles.map((article) => ({
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-size: 400%;
-		background-position: 0%;
+		background-position: 0;
 	}
 	.instructions {
 		line-height: 1.6;
