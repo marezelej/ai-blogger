@@ -2,6 +2,7 @@ import fs from 'fs';
 import openai from "./openapi";
 import {toFileName} from "./functions";
 import ENV from "./env";
+import ArrayBufferView = NodeJS.ArrayBufferView;
 
 async function fetchTrend(): Promise<string> {
     const startYear = 1800;
@@ -55,6 +56,19 @@ function getPrompt(content: string, image: string): string {
     return image + ' - ' + content.substring(startIndex, newLineIndex);
 }
 
+async function generateImage(path: string, prompt: string) {
+    const response = await openai.createImage({
+        prompt,
+        n: 1,
+        size: '256x256',
+    });
+    const imageResponse = await fetch(response.data.data[0].url ?? '');
+    const blob = await imageResponse.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    fs.writeFileSync(path, buffer);
+}
+
 async function replaceImages(content: string): Promise<{
     content: string,
     images: {label: string, url: string}[]
@@ -66,12 +80,10 @@ async function replaceImages(content: string): Promise<{
     for (const match of matches) {
         const description = match[1].trim();
         const prompt = getPrompt(content, match[0]);
-        const response = await openai.createImage({
-            prompt,
-            n: 1,
-            size: '256x256',
-        });
-        const url = response.data.data[0].url as string;
+        const fileName = Date.now() + '.png';
+        const path = `./ai-blogger-server/public/img/${fileName}`;
+        const url = `/img/${fileName}`;
+        await generateImage(path, prompt);
         images.push({
             label: description,
             url: url
