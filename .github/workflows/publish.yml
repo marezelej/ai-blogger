@@ -3,7 +3,7 @@ name: Publish a new article
 on: workflow_dispatch
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,9 +19,6 @@ jobs:
           LANGUAGE: en
         run: npm run start
       - name: Commit and push
-        env:
-         CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-         CI_COMMIT_AUTHOR: Continuous Integration
         run: |
          git commit -a -m "Publish a new article"
          git push
