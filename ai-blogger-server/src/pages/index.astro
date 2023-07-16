@@ -5,8 +5,8 @@ import { getCollection, getEntry } from 'astro:content';
 import Disclaimer from "../components/Disclaimer.astro";
 const articles = await getCollection('articles');
 const items = articles.map((article) => ({
-    title: article.body.substr(0, article.body.indexOf('\n')).replace(/[#*]/g, '').trim(),
-    url: '/article/' + article.slug
+    title: article.body.substring(0, article.body.indexOf('\n')).replace(/[#*]/g, '').trim(),
+    url: '/article/' + article.slug,
 })).reverse();
 ---
 
