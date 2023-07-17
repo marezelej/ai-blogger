@@ -1,7 +1,7 @@
 name: Publish a new article to Medium
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   publish-to-medium:
