@@ -24,4 +24,4 @@ jobs:
           tags: "test,tag"
           title: "title"
           license: "all-rights-reserved"
-          publish_status: "draft"
+          publish_status: "public"
