@@ -1,0 +1,27 @@
+name: Publish a new article to Medium
+
+on:
+  workflow_call:
+
+jobs:
+  publish-to-medium:
+    name: Post to Medium
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish Medium Post
+        uses: philips-software/post-to-medium-action@v0.4.1
+        with:
+          integration_token: "${{ secrets.MEDIUM_TOKEN }}"
+          content: |
+            # Story Title
+            ## an optional subtitle
+            
+            Lorem ipsum content Lorem ipsum content Lorem ipsum
+            content Lorem ipsum content Lorem ipsum content Lorem 
+            ipsum content Lorem ipsum content Lorem ipsum content.
+          content_format: "markdown"
+          notify_followers: "false"
+          tags: "test,tag"
+          title: "title"
+          license: "all-rights-reserved"
+          publish_status: "draft"
